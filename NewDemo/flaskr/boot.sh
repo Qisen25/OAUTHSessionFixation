@@ -1,2 +1,2 @@
 #!/bin/sh
-exec gunicorn -b :5000 --access-logfile - --error-logfile - __init__:app
+exec gunicorn -b :5000 --access-logfile - --error-logfile - app:app

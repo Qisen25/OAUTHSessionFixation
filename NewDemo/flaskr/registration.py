@@ -28,3 +28,8 @@ def register():
         return redirect('/register_complete')
 
     return render_template('register.html', form=form)
+
+#Register Complete page - Needs to show customer number for the created user!
+@app.route('/register_complete')
+def register_complete():
+    return render_template('registration_complete.html')

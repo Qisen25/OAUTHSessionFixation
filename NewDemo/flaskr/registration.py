@@ -13,7 +13,7 @@ registeredAccounts = []
 @app.route('/register', methods=["GET","POST"])
 def register():
 
-    #Generates registration form using above class. All fields are mandatory
+    #Generates registration form. User input fields are not centred for some reason
     form = objects.registrationForm(request.form)
     if request.method == "POST":
 

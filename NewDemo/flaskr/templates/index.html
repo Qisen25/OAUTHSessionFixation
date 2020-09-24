@@ -1,14 +1,55 @@
-{% extends "layout.html" %}
+<html>
 
-{% block title %}Home{% endblock %}
+  <head>
+    <title>Steve from IT Banking</title>
+  </head>
 
-{% block body %}
-  <h1 class="text-center">Steve From IT Banking</h1>
-  <div class="row">
-    <div class="col-sm-6 offset-sm-3">
-      <div class="jumbotron">
-        Don't worry about our website, it's secure, we promise
-      </div>
-    </div>
-  </div>
-{% endblock %}
+  <style>
+    body {
+      background-color:lightblue;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+    }
+
+    p {
+      color: white;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 10px;
+    }
+
+  </style>
+
+  <body>
+
+    <h1>Welcome to Steve from IT Banking</h1>
+    <p>Please login to continue</p>
+
+    <form>
+      <label for='custNum'>Customer Number:</label><br>
+      <input type="text" id="custNum" name="custNum"><br><br>
+      <label for='password'>Password:</label><br>
+      <input type="text" id="password" name="password"><br><br>
+      <input type="button" value="Submit">
+    </form>
+
+    <p>Don't have an account?</p>
+    <form>
+      <input type="button" value="Register">
+    </form>
+
+  </body>
+  <footer><br>Property of Steve from IT, ISEC3004, 2020</footer>
+
+</html>

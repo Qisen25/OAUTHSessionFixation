@@ -42,14 +42,15 @@
     <h2>Create an account with Steve from IT Banking<h2>
     <p>Complete the following information to register</p>
 
-    <form>
-      <label for='fname'>First Name:</label><br>
-      <input type="text" id="fname" name="fname"><br><br>
-      <label for='lname'>Surname:</label><br>
-      <input type="text" id="lname" name="lname"><br><br>
-      <label for='password'>Password:</label><br>
-      <input type="text" id="password" name="password"><br><br>
-      <input type="Submit" value="Submit">
+    {% from "_formhelpers.html" import render_field %}
+
+    <form action='/register' method="POST">
+      <dl>
+        {{ render_field(form.fname) }}<br>
+        {{ render_field(form.lname) }}<br>
+        {{ render_field(form.password) }}<br>
+      </dl>
+      <p><input type=submit value=Register>
     </form>
 
   </body>

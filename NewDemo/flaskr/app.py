@@ -13,11 +13,11 @@ app = Flask(__name__)
 
 #Package for registration page
 # import OAUTH.registration
-import registration
+import oauthcopy.registration
 
 # #Package for objects
 # import OAUTH.objects
-from objects import *
+from oauthcopy.objects import *
 
 #List from old demo that needs to be passed to different modules - Not yet working
 registeredAccounts = []

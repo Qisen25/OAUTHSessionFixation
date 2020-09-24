@@ -10,7 +10,7 @@ app = Flask(__name__)
 #Package for registration page
 import OAUTH.registration
 
-#Package for objects -- Not yet working correctly
+#Package for objects
 import OAUTH.objects
 
 #List from old demo that needs to be passed to different modules - Not yet working
@@ -34,7 +34,7 @@ else:
 @app.route('/')
 def index():
     
-    #Create login form using above class. Both fields are mandatory
+    #Create login form, both fields are mandatory -- user input fields are not centred for some reason
     login = loginForm(request.form)
     if request.method == "POST":
 

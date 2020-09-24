@@ -1,10 +1,14 @@
 import os
 
-from OAUTH import app
-from OAUTH import objects
+# from OAUTH import app
+# from OAUTH import objects
+# from app import app
+import objects
 
 from flask import Flask, render_template, request, redirect
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
+
+from app import app
 
 #Needs to be passed from main, placed here to temporarily stop errors
 registeredAccounts = []

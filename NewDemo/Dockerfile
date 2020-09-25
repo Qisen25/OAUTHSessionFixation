@@ -6,6 +6,7 @@ FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp
 COPY flaskr/ flaskr/
 WORKDIR flaskr/
+RUN apk add gcc musl-dev libffi-dev openssl-dev
 RUN pip install -r requirements.txt
 ENV FLASK_APP __init__.py
 ENV LC_ALL C.UTF-8

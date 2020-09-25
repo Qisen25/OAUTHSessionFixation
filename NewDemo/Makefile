@@ -1,6 +1,6 @@
 APP=oauth_session_fixation
 APP_PORT= 5000
-HOST_PORT= 8000
+HOST_PORT= 5000
 
 all: build
 

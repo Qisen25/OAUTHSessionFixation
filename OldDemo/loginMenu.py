@@ -2,7 +2,7 @@ from objects import *
 from random import seed
 from random import randint
 
-def login_menu(sessionID, registeredUsers, registeredAccounts):
+def login_menu(sessionID, registeredUsers):
 
     valid = 0
 
@@ -51,7 +51,7 @@ def login(sessionID, registeredUsers):
 
     return currentUser
 
-def register(sessionID, registeredUsers, registeredAccounts):
+def register(sessionID, registeredUsers):
 
     #Name and surname are capitalised for aesthetics
     name = (input("\nFirst Name: ")).capitalize()
@@ -59,7 +59,7 @@ def register(sessionID, registeredUsers, registeredAccounts):
     password = input("Enter a password: ")
 
     #Creates user object, append to registeredUsers list
-    currentUser = user(name, surname, password, registeredAccounts)
+    currentUser = user(name, surname, password)
     registeredUsers.append(currentUser)
 
     print("\nYour Customer Identification Number is: ", currentUser.customerNum)

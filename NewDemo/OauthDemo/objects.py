@@ -10,12 +10,12 @@ class sessionID():
         self.authCustomerNum = None
 
 class user():
-    def __init__(self, name, surname, password, registeredAccounts):
+    def __init__(self, name, surname, password):
         self.name = name
         self.surname = surname
         self.customerNum = randint(1,9999)
         self.password = password
-        self.account = account(self.customerNum, registeredAccounts)
+        self.account = account(self.customerNum)
         self.accountNum = self.account.accountNum
 
     def deposit(self):
@@ -34,9 +34,9 @@ class user():
         accountExists = 0
         payeeAccount = int(input("Please enter a payee account number: "))
 
-        for item in registeredAccounts:
-            if item.accountNum == payeeAccount:
-                payee = item
+        for account in registeredAccounts:
+            if account.accountNum == payeeAccount:
+                payee = account
                 accountExists = 1
 
         if accountExists == 1:
@@ -65,11 +65,10 @@ class user():
         return None
 
 class account():
-    def __init__(self, customerNum, registeredAccounts):
+    def __init__(self, customerNum):
         self.accountNum = randint(10000,20000)
         self.customerNum = customerNum
         self.balance = 1000000
-        registeredAccounts.append(self)
 
 class registrationForm(Form):
     fname = StringField('First name: ', [validators.DataRequired()])

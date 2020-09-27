@@ -3,20 +3,20 @@ from wtforms import Form, BooleanField, StringField, PasswordField, validators, 
 from random import seed
 from random import randint
 
-class sessionID():
+class SessionID():
     def __init__(self, ID):
         self.ID = ID
         self.auth = False
         self.authCustomerNum = None
 
-class user():
+class User():
     def __init__(self, name, surname, password):
         self.name = name
         self.surname = surname
         self.customerNum = randint(1,9999)
         self.password = password
-        self.account = account(self.customerNum)
-        self.accountNum = self.account.accountNum
+        self.account = Account(self.customerNum)
+        self.accountNum = self.account.accountNum # For convenience
 
     def deposit(self):
         valid = 0
@@ -64,17 +64,17 @@ class user():
 
         return None
 
-class account():
+class Account():
     def __init__(self, customerNum):
         self.accountNum = randint(10000,20000)
         self.customerNum = customerNum
         self.balance = 1000000
 
-class registrationForm(Form):
+class RegistrationForm(Form):
     fname = StringField('First name: ', [validators.DataRequired()])
     lname = StringField('Last name: ', [validators.DataRequired()])
     password = PasswordField('Password: ', [validators.DataRequired()])
 
-class loginForm(Form):
+class LoginForm(Form):
     customerNum = IntegerField('Customer Number: ', [validators.DataRequired()])
     password = PasswordField('Password: ', [validators.DataRequired()])

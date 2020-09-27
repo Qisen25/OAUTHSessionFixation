@@ -4,8 +4,8 @@
 
 FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp
-COPY flaskr/ flaskr/
-WORKDIR flaskr/
+COPY OauthDemo/ OauthDemo/
+WORKDIR OauthDemo/
 RUN pip install -r requirements.txt
 ENV FLASK_APP __init__.py
 ENV LC_ALL C.UTF-8

@@ -32,12 +32,11 @@ if os.path.isfile('./OAUTHUsers.txt') and os.stat('OAUTHUsers.txt').st_size != 0
 else:
     registeredUsers = []
 
-#Default page
-@app.route('/')
-def index():
-    
+
+@app.route('/', methods=["GET","POST"])
+def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
-    login = loginForm(request.form)
+    login = LoginForm(request.form)
     if request.method == "POST":
 
         #Debug print

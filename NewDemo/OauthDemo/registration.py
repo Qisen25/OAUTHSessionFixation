@@ -1,5 +1,3 @@
-import os
-
 # from OAUTH import app
 # from OAUTH import objects
 # from app import app
@@ -15,11 +13,9 @@ import model
 # Register route
 @app.route('/register', methods=["GET","POST"])
 def register():
-
     # Generates registration form. User input fields are not centred for some reason
     form = objects.registrationForm(request.form)
     if request.method == "POST":
-
         # Creates the new user - form data now exists in the user object
         newUser = objects.user(form.fname.data, form.lname.data, form.password.data)
         

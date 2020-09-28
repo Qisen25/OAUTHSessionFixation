@@ -1,4 +1,4 @@
-#Docker files don't need to rebuild after every change on code anymore
+# Docker files don't need to rebuild after every change on code anymore
 
 Follow steps:
 
@@ -12,7 +12,7 @@ Follow steps:
        
        
        
-If really need to rebuild on every code change:
+If really need to rebuild on every code change and copy code to container on build:
 
     1. run " make slow "
     2. run " make start "

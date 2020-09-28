@@ -17,10 +17,10 @@ def register():
     form = RegistrationForm(request.form)
     if request.method == "POST":
         # Creates the new user - form data now exists in the user object
-        newUser = objects.user(form.fname.data, form.lname.data, form.password.data)
+        newUser = User(form.fname.data, form.lname.data, form.password.data)
         
         # Add the new user to the list of users
-        model.registeredUsers.add(newUser)
+        model.addRegisteredUser(newUser)
         
         # Debug printouts
         print(newUser.name)

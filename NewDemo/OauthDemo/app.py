@@ -3,6 +3,7 @@
 
 import os
 import pickle
+import sys
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
@@ -76,16 +77,18 @@ def login():
         if request.method == "POST":
 
             #Debug print
-            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}")
+            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}", file=sys.stdout)
 
-            # TODO DO LOGIN AUTHENTICATION HERE
             user = model.validateUser(login.customerNum.data, login.password.data)
 
-            print(f"DEBUG: Tried to get user and got {user}")
+            print(f"DEBUG: Tried to get user and got {user}", file=sys.stdout)
 
             if (user):
                 # Debug print
-                print(f"Login for {login.customerNum.data} accepted!")
+                print(f"Login for {login.customerNum.data} accepted!", file=sys.stdout)
+
+                #Set the session to the current user's customer number
+                session['CUSTOMER_NUM'] = user.customerNum
 
                 #On successful login, will redirect to that user's profile
                 return redirect('/')

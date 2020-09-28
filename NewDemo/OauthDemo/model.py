@@ -6,7 +6,7 @@ registeredUsers = []
 
 def addRegisteredUser(user):
     """Adds the imported user to the list of users"""
-    registeredUsers.add(user)
+    registeredUsers.append(user)
 
 def validateUser(customerNum, password):
     """Checks if the imported customer and password match a user of the website. 

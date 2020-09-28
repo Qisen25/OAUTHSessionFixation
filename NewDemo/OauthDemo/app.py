@@ -4,7 +4,7 @@
 import os
 import pickle
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
 from flask_login import login_required, login_user, current_user
 
@@ -28,20 +28,25 @@ from objects import *
 
 import model
 
-#List from old demo that needs to be passed to different modules - Not yet working
-registeredAccounts = []
 
+############################
+## INTERNAL DOCUMENTATION ##
+############################
+# Session Information:
+#   User information is stored in the session by storing the customer number under the key "CUSTOMER_NUM".
+#       If this key is not present, the user is not logged in.
+
+
+#########################
+## RUNTIME STARTS HERE ##
+#########################
 #Check for existing data & load - can use as standin for database - use code from old demo
 if os.path.isfile('./OAUTHUsers.txt') and os.stat('OAUTHUsers.txt').st_size != 0:
 
     loadfile = open('OAUTHUsers.txt', 'rb')
-    registeredUsers = pickle.load(loadfile)
+    model.registeredUsers = pickle.load(loadfile)
 
     loadfile.close()
-
-else:
-    registeredUsers = []
-
 
 
 from authlib.integrations.flask_client import OAuth
@@ -57,18 +62,42 @@ oauth.register(
 
 #Default page
 @app.route('/', methods=["GET","POST"])
+def index():
+    # For now just redirects to banking page TODO make an actual index page
+    return redirect('/banking')
+
+    # if 'username' in session: # If the user has a session
+    #     return render_template('index.html')
+    # else:
+    #     # Redirect to login page
+    #     return redirect('/login')
+
+@app.route('/login')
 def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
     login = LoginForm(request.form)
-    if request.method == "POST":
+    if not 'CUSTOMER_NUM' in session: # If customer not already logged in
+        if request.method == "POST":
 
-        #Debug print
-        print(login.customerNum.data)
-        print(login.password.data)
+            #Debug print
+            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}")
 
-        #On successful login, will redirect to that user's profile (NOT IMPLEMENTED)
-        return redirect('/login')
-    return render_template('index.html', form=login)
+            # TODO DO LOGIN AUTHENTICATION HERE
+            user = model.validateUser(login.customerNum.data, login.password.data)
+
+            print(f"DEBUG: Tried to get user and got {user}")
+
+            if (user):
+                # Debug print
+                print(f"Login for {login.customerNum.data} accepted!")
+
+                #On successful login, will redirect to that user's profile
+                return redirect('/')
+            else:
+                flash("Invalid username or password")
+        return render_template('login.html', form=login)
+    else: # If customer already logged in
+        return redirect('/')
 
 @app.route('/twitterLogin')
 def twitterLogin():

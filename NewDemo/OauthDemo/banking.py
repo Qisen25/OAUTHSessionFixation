@@ -8,4 +8,9 @@ from flask_login import login_required
 
 @app.route('/banking', methods=["GET","POST"])
 def banking():
-    return render_template('banking.html', username=request.args['user'])
+    if 'CUSTOMER_NUM' in session: # If user session exists
+        user = model.findUser(session['CUSTOMER_NUM']) # Get the user by customer number
+
+        return render_template('banking.html', username=request.args['user'])
+    else:
+        return redirect('/login')

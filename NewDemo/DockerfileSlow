@@ -1,6 +1,5 @@
 # Python image of the dockerized flask app
-# atm i dont think it handles https but there are
-# probs other ways to handle that
+# This image copies code on every rebuild
 
 FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp

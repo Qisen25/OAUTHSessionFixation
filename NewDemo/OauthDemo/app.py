@@ -83,7 +83,7 @@ def authorize():
     resp = twitter.get('account/verify_credentials.json')
     profile = resp.json()
     #login_user(current_user)
-    #print(profile)
+    print(profile)
     # can store to db or whatever
     return redirect(url_for('banking', user=str(profile['name'])))
 

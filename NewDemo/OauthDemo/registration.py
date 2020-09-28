@@ -1,7 +1,7 @@
 # from OAUTH import app
 # from OAUTH import objects
 # from app import app
-import objects
+from objects import *
 
 from flask import Flask, render_template, request, redirect
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
@@ -14,7 +14,7 @@ import model
 @app.route('/register', methods=["GET","POST"])
 def register():
     # Generates registration form. User input fields are not centred for some reason
-    form = objects.registrationForm(request.form)
+    form = RegistrationForm(request.form)
     if request.method == "POST":
         # Creates the new user - form data now exists in the user object
         newUser = objects.user(form.fname.data, form.lname.data, form.password.data)

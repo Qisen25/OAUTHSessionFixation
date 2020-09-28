@@ -32,23 +32,27 @@
   </style>
 
   <body>
+      <h1>Welcome to Steve from IT Banking</h1>
+      <p>Please login to continue</p>
+      
+      {% from "_formhelpers.html" import render_field %}
 
-    <h1>Welcome to Steve from IT Banking</h1>
-    <p>Please login to continue</p>
-    
-    {% from "_formhelpers.html" import render_field %}
+      <form action='/' method="POST" align="center">
+        <dl align="center">
+          {{render_field(form.customerNum)}} <br>
+          {{render_field(form.password)}}<br>
+        </dl>
+        <p><input type=submit value=Login>
+      </form>
 
-    <form action='/' method="POST">
-      <dl align="center">
-        {{render_field(form.customerNum)}}<br>
-        {{render_field(form.password)}}<br>
-      </dl>
-      <p><input type=submit value=Login>
-    </form>
+    <div>
+      <p>Don't have an account?</p>
+      <p align="center"><a href='/register'><button class=grey>Register</button></a></p>
+    </div>
 
-    <p>Don't have an account?</p>
-    <p align="center"><a href='/register'><button class=grey>Register</button></a></p>
-
+    <div>
+      <p align="center"><a href='/twitterLogin'><button class=grey>Sign in with Twitter</button></a></p>
+    </div>
   </body>
   <footer><br>Property of Steve from IT, ISEC3004, 2020</footer>
 

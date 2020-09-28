@@ -4,6 +4,7 @@
 
 FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp
+RUN apk add gcc musl-dev libffi-dev openssl-dev
 COPY OauthDemo/ OauthDemo/
 WORKDIR OauthDemo/
 RUN pip install -r requirements.txt

@@ -6,12 +6,16 @@ import pickle
 
 from flask import Flask, render_template, request, redirect, url_for
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
-# from form import LoginForm
+from flask_login import login_required, login_user, current_user
 
 #App creation
 app = Flask(__name__)
 app.secret_key = '!secret'
 app.config.from_object('config')
+
+#login_manager = LoginManager()
+#login_manager.init_app(app)
+#login_manager.login_view = 'login'
 
 #Package for registration page
 # import OAUTH.registration
@@ -78,6 +82,7 @@ def authorize():
     token = twitter.authorize_access_token()
     resp = twitter.get('account/verify_credentials.json')
     profile = resp.json()
+    #login_user(current_user)
     #print(profile)
     # can store to db or whatever
     return redirect(url_for('banking', user=str(profile['name'])))

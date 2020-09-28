@@ -26,7 +26,7 @@ NOTE: In the makefile you can change the host port to whatever you want.
    
 ** One example interpretation of OAuth sess fix **
     1. Attacker logs in to twitter auth page but doesn't authorize access yet, instead copies the link.
-    2. Attacker sends it to a victim, the victim clicks on the link to page and signs in to authorize.
+    2. Attacker sends link to a victim, the victim clicks on the link to page and signs in to authorize.
     3. The following can occur
     	a. Since the victim uses the link indentical to attackers (same auth request code, callback),
 	   the attacker can just refresh/goto his auth link to complete auth flow on his end

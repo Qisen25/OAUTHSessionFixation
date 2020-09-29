@@ -19,5 +19,6 @@ RUN pip3 install -r requirements.txt
 ENV FLASK_APP __init__.py
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
+ENV AUTHLIB_INSECURE_TRANSPORT=true
 EXPOSE 8000
 ENTRYPOINT ["./boot.sh"]

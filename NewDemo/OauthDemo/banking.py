@@ -3,7 +3,7 @@ import model
 
 from app import app
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_login import login_required
 
 @app.route('/banking', methods=["GET","POST"])

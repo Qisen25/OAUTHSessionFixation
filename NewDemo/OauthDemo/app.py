@@ -3,19 +3,16 @@
 
 import os
 import pickle
+import sys
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
-from flask_login import login_required, login_user, current_user
+# from form import LoginForm
 
 #App creation
 app = Flask(__name__)
 app.secret_key = '!secret'
 app.config.from_object('config')
-
-#login_manager = LoginManager()
-#login_manager.init_app(app)
-#login_manager.login_view = 'login'
 
 #Package for registration page
 # import OAUTH.registration
@@ -80,16 +77,18 @@ def login():
         if request.method == "POST":
 
             #Debug print
-            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}")
+            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}", file=sys.stdout)
 
-            # TODO DO LOGIN AUTHENTICATION HERE
             user = model.validateUser(login.customerNum.data, login.password.data)
 
-            print(f"DEBUG: Tried to get user and got {user}")
+            print(f"DEBUG: Tried to get user and got {user}", file=sys.stdout)
 
             if (user):
                 # Debug print
-                print(f"Login for {login.customerNum.data} accepted!")
+                print(f"Login for {login.customerNum.data} accepted!", file=sys.stdout)
+
+                #Set the session to the current user's customer number
+                session['CUSTOMER_NUM'] = user.customerNum
 
                 #On successful login, will redirect to that user's profile
                 return redirect('/')
@@ -111,8 +110,10 @@ def authorize():
     token = twitter.authorize_access_token()
     resp = twitter.get('account/verify_credentials.json')
     profile = resp.json()
-    #login_user(current_user)
-    print(profile)
+    
+    if not 'CUSTOMER_NUM' in session:
+        session['CUSTOMER_NUM'] = profile['id']
+    #print(profile)
     # can store to db or whatever
     return redirect(url_for('banking', user=str(profile['name'])))
 

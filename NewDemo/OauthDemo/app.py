@@ -69,11 +69,13 @@ def index():
     #     # Redirect to login page
     #     return redirect('/login')
 
-@app.route('/login')
+@app.route('/login', methods=["GET","POST"])
 def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
     login = LoginForm(request.form)
+    # print(repr(login.customerNum))
     if not 'CUSTOMER_NUM' in session: # If customer not already logged in
+        print(request.method == "POST")
         if request.method == "POST":
 
             #Debug print
@@ -113,6 +115,7 @@ def authorize():
     
     if not 'CUSTOMER_NUM' in session:
         session['CUSTOMER_NUM'] = profile['id']
+        
     #print(profile)
     # can store to db or whatever
     return redirect(url_for('banking', user=str(profile['name'])))

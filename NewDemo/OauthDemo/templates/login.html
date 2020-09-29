@@ -37,7 +37,7 @@
       
       {% from "_formhelpers.html" import render_field %}
 
-      <form action='/' method="POST" align="center">
+      <form action='/login' method="POST" align="center">
         <dl align="center">
           {{render_field(form.customerNum)}} <br>
           {{render_field(form.password)}}<br>

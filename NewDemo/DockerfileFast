@@ -1,6 +1,6 @@
 # Python image of the dockerized flask app
-# atm i dont think it handles https but there are
-# probs other ways to handle that
+# This image just installs dependencies for env
+# Should be used with volume mount
 
 FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp

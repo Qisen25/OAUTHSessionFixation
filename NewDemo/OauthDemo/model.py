@@ -8,22 +8,30 @@ def addRegisteredUser(user):
     """Adds the imported user to the list of users"""
     registeredUsers.append(user)
 
-def validateUser(customerNum, password):
+def validateUser(accountNum, password):
     """Checks if the imported customer and password match a user of the website. 
     If so, returns the relevant user object. Returns 'None' otherwise."""
     
+    print("DEBUG: Here's all the users")
+    [print(user.accountNum) for user in registeredUsers] #TODO get rid of this
+
     foundUser = None
 
     for user in registeredUsers:
-        if user.customerNum == customerNum and user.password == password:
+        if user.accountNum == accountNum and user.password == password:
             foundUser = user
             break
 
     return foundUser
 
-def findUser(customerNum):
+def findUser(accountNum):
+    print(f"DEBUG: Searching for account {accountNum}")
+    print("DEBUG: Here's all the users")
+    [print(user.accountNum) for user in registeredUsers] #TODO get rid of this
+
     for user in registeredUsers:
-        if user.customerNum == customerNum:
+        if user.accountNum == accountNum:
+            print("User found!")
             return user
     
     return None

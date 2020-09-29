@@ -33,7 +33,7 @@
 #     if request.method == "POST":
 
 #         #Debug print
-#         print(login.customerNum.data)
+#         print(login.accountNum.data)
 #         print(login.password.data)
 
 #         #On successful login, will redirect to that user's profile (NOT IMPLEMENTED)

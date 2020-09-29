@@ -30,7 +30,7 @@ import model
 ## INTERNAL DOCUMENTATION ##
 ############################
 # Session Information:
-#   User information is stored in the session by storing the customer number under the key "CUSTOMER_NUM".
+#   User information is stored in the session by storing the account number under the key "ACCOUNT_NUM".
 #       If this key is not present, the user is not logged in.
 
 
@@ -73,24 +73,24 @@ def index():
 def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
     login = LoginForm(request.form)
-    # print(repr(login.customerNum))
-    if not 'CUSTOMER_NUM' in session: # If customer not already logged in
+    # print(repr(login.accountNum))
+    if not 'ACCOUNT_NUM' in session: # If customer not already logged in
         print(request.method == "POST")
         if request.method == "POST":
 
             #Debug print
-            print(f"Attempted login with customerNum {login.customerNum.data}, password {login.password.data}", file=sys.stdout)
+            print(f"Attempted login with account '{login.accountNum}', password '{login.password.data}'", file=sys.stdout)
 
-            user = model.validateUser(login.customerNum.data, login.password.data)
+            user = model.validateUser(int(login.accountNum.data), login.password.data)
 
             print(f"DEBUG: Tried to get user and got {user}", file=sys.stdout)
 
-            if (user):
+            if (user is not None):
                 # Debug print
-                print(f"Login for {login.customerNum.data} accepted!", file=sys.stdout)
+                print(f"Login for {login.accountNum.data} accepted!", file=sys.stdout)
 
                 #Set the session to the current user's customer number
-                session['CUSTOMER_NUM'] = user.customerNum
+                session['ACCOUNT_NUM'] = user.accountNum
 
                 #On successful login, will redirect to that user's profile
                 return redirect('/')
@@ -113,8 +113,8 @@ def authorize():
     resp = twitter.get('account/verify_credentials.json')
     profile = resp.json()
     
-    if not 'CUSTOMER_NUM' in session:
-        session['CUSTOMER_NUM'] = profile['id']
+    if not 'ACCOUNT_NUM' in session:
+        session['ACCOUNT_NUM'] = profile['id']
         
     #print(profile)
     # can store to db or whatever

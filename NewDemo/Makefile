@@ -23,8 +23,6 @@ run:
 start:
 	docker run -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP)
 
-
-
 clean:
 	docker image rm $(APP)
 	docker system prune

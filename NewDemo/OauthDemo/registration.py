@@ -23,6 +23,8 @@ def register():
         # Add the new user to the list of users
         model.addRegisteredUser(newUser)
         
+        model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
+
         # Debug printouts
         print(newUser.name, file=sys.stdout)
         print(newUser.surname, file=sys.stdout)

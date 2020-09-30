@@ -38,12 +38,9 @@ import model
 ## RUNTIME STARTS HERE ##
 #########################
 #Check for existing data & load - can use as standin for database - use code from old demo
-if os.path.isfile('./OAUTHUsers.txt') and os.stat('OAUTHUsers.txt').st_size != 0:
-
-    loadfile = open('OAUTHUsers.txt', 'rb')
-    model.registeredUsers = pickle.load(loadfile)
-
-    loadfile.close()
+model.loadRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
+print("LOADED ALL REGISTERED USERS - here they are:")
+[print(user.accountNum) for user in model.registeredUsers] #TODO get rid of this
 
 
 from authlib.integrations.flask_client import OAuth
@@ -72,9 +69,10 @@ def index():
 @app.route('/login', methods=["GET","POST"])
 def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
-    login = LoginForm(request.form)
     # print(repr(login.accountNum))
     if not 'ACCOUNT_NUM' in session: # If customer not already logged in
+        login = LoginForm(request.form)
+
         print(request.method == "POST")
         if request.method == "POST":
 
@@ -118,7 +116,8 @@ def authorize():
         
     #print(profile)
     # can store to db or whatever
-    return redirect(url_for('banking', user=str(profile['name'])))
+    # return redirect(url_for('banking', user=str(profile['name']))) TODO replace with this (sorry Kei i'm lazy)
+    return redirect(url_for('banking', name=str(profile['name']).user))
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

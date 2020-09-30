@@ -98,6 +98,15 @@ def login():
     else: # If customer already logged in
         return redirect('/')
 
+@app.route('/logout', methods=["GET", "POST"])
+def logout():
+    print("Logging out a user...")
+    # Invalidate the current session
+    session.clear()
+
+    return redirect('/')
+
+
 @app.route('/twitterLogin')
 def twitterLogin():
     twitter = oauth.create_client("twitter")

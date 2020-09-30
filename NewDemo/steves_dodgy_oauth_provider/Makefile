@@ -1,6 +1,6 @@
-APP=oauth_session_fixation
+APP=our_dodgy_provider
 APP_PORT= 5000
-HOST_PORT= 5000
+HOST_PORT= 31415
 
 all: build
 
@@ -17,11 +17,13 @@ slow:
 # Do not need to rebuild container if using this
 # Everytime change code just stop current docker and run this again	
 run:
-	docker run -v "$(PWD)/OauthDemo/:/vulnerable_oauthapp/OauthDemo/" -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP) sh
+	docker run -v "$(PWD)/DodgyProvider/:/vulnerable_oauthapp/DodgyProvider/" -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP) sh
 
 # The default cmd for running container
 start:
 	docker run -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP)
+
+
 
 clean:
 	docker image rm $(APP)

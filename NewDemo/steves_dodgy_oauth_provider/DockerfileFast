@@ -5,7 +5,7 @@
 FROM python:3.8-alpine
 WORKDIR /vulnerable_oauthapp
 RUN apk add gcc musl-dev libffi-dev openssl-dev
-WORKDIR OauthDemo/
+WORKDIR DodgyProvider/
 COPY OauthDemo/requirements.txt .
 
 RUN pip install -r requirements.txt
@@ -14,5 +14,4 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV AUTHLIB_INSECURE_TRANSPORT=true
 EXPOSE 5000
-
 ENTRYPOINT ["sh", "boot.sh"] # Run the server on gunicorn which will also log server activity

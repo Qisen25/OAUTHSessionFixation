@@ -57,14 +57,18 @@ oauth.register(
 #Default page
 @app.route('/', methods=["GET","POST"])
 def index():
-    # For now just redirects to banking page TODO make an actual index page
-    return redirect('/banking')
+    print("ENTERED INDEX PAGE")
+    
+    if 'ACCOUNT_NUM' in session: # If user session exists
+        user = model.findUser(session['ACCOUNT_NUM']) # Get the user by customer number
 
-    # if 'username' in session: # If the user has a session
-    #     return render_template('index.html')
-    # else:
-    #     # Redirect to login page
-    #     return redirect('/login')
+        print(f"DEBUG: Index - user session is {session['ACCOUNT_NUM']}")
+        print(f"Initiated index for user '{user.accountNum}'")
+
+        return render_template('index.html', name=(user.name + ' ' + user.surname), balance=user.account.balance)
+    else:
+        return redirect('/login')
+
 
 @app.route('/login', methods=["GET","POST"])
 def login():

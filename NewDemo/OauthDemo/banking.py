@@ -15,6 +15,6 @@ def banking():
         print(f"DEBUG: Banking - user session is {session['ACCOUNT_NUM']}")
         print(f"Initiated banking for user '{user.accountNum}'")
 
-        return render_template('banking.html', name=(user.name + ' ' + user.surname), balance=user.account.balance)
+        return render_template('banking.html', name=(user.name), balance=user.account.balance)
     else:
         return redirect('/login')

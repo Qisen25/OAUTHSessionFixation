@@ -7,16 +7,15 @@ class SessionID():
     def __init__(self, ID):
         self.ID = ID
         self.auth = False
-        self.authCustomerNum = None
+        self.authAccountNum = None
 
 class User():
     def __init__(self, name, surname, password):
         self.name = name
         self.surname = surname
-        self.customerNum = randint(1,9999)
         self.password = password
-        self.account = Account(self.customerNum)
-        self.accountNum = self.account.accountNum # For convenience
+        self.accountNum = randint(1, 9999) # For convenience
+        self.account = Account(self.accountNum)
 
     def deposit(self):
         valid = 0
@@ -65,9 +64,9 @@ class User():
         return None
 
 class Account():
-    def __init__(self, customerNum):
-        self.accountNum = randint(10000,20000)
-        self.customerNum = customerNum
+    def __init__(self, accountNum):
+        self.accountNum = accountNum #randint(10000,20000) # FIXME replaced account number with account number, hope this is ok
+        # self.accountNum = accountNum
         self.balance = 1000000
 
 class RegistrationForm(Form):
@@ -76,5 +75,5 @@ class RegistrationForm(Form):
     password = PasswordField('Password: ', [validators.DataRequired()])
 
 class LoginForm(Form):
-    customerNum = IntegerField('Customer Number: ', [validators.DataRequired()])
+    accountNum = IntegerField('Account Number: ', [validators.DataRequired()])
     password = PasswordField('Password: ', [validators.DataRequired()])

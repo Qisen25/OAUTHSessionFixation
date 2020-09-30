@@ -17,13 +17,11 @@ slow:
 # Do not need to rebuild container if using this
 # Everytime change code just stop current docker and run this again	
 run:
-	docker run -v $(PWD)/OauthDemo/:/vulnerable_oauthapp/OauthDemo/ -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP) sh
+	docker run -v "$(PWD)/OauthDemo/:/vulnerable_oauthapp/OauthDemo/" -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP) sh
 
 # The default cmd for running container
 start:
 	docker run -p 0.0.0.0:$(HOST_PORT):$(APP_PORT)/tcp -it --rm $(APP)
-
-
 
 clean:
 	docker image rm $(APP)

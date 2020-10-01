@@ -44,7 +44,9 @@ print("LOADED ALL REGISTERED USERS - here they are:")
 
 
 from authlib.integrations.flask_client import OAuth
+
 oauth = OAuth(app)
+#Twitter
 oauth.register(
     name='twitter',
     api_base_url='https://api.twitter.com/1.1/',
@@ -70,10 +72,10 @@ oauth.register(
 def index():
     print("ENTERED INDEX PAGE")
     
-    if model.validateSession(session): # If user session exists
-        user = model.findUser(model.sessions[session['SESSION_ID']].accountNum) # Get the user by customer number
+    if 'ACCOUNT_NUM' in session: # If user session exists
+        user = model.findUser(session['ACCOUNT_NUM']) # Get the user by customer number
 
-        print(f"DEBUG: Index - user session is {session['SESSION_ID']}")
+        print(f"DEBUG: Index - user session is {session['ACCOUNT_NUM']}")
         print(f"Initiated index for user '{user.accountNum}'")
 
         return render_template('index.html', name=(user.name + ' ' + user.surname), number=user.accountNum, balance=user.account.balance)
@@ -149,18 +151,11 @@ def authorize():
     profile = resp.json()
 
     # print(repr(profile)) #for debugging
-    newUser = User(model.generateAccountNum(), profile['name'], '', "twitter")
-
+    newUser = User(profile['name'], '', "twitter")
 
     model.addRegisteredUser(newUser)
+        
     model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
-
-    newSessionObj = model.createSession(newUser)
-
-    # print(f"JUST CREATED SESSION {}: {}")
-    print(model.sessions)
-    # Linking new session object with the user's actual session
-    session['SESSION_ID'] = newSessionObj.ID
         
     #print(profile)
     # can store to db or whatever                                       # Lol Moritz
@@ -174,7 +169,6 @@ def authorize():
         session['ACCOUNT_NUM'] = accountNum
     
     return redirect('/')
-
 
 @app.route('/steveLogin')
 def steveLogin():
@@ -198,13 +192,6 @@ def steverAuthorized():
     model.addRegisteredUser(newUser)
         
     model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
-
-    newSessionObj = model.createSession(newUser)
-
-    # print(f"JUST CREATED SESSION {}: {}")
-    print(model.sessions)
-    # Linking new session object with the user's actual session
-    session['SESSION_ID'] = newSessionObj.ID
         
     #print(profile)
     # can store to db or whatever                                       # Lol Moritz

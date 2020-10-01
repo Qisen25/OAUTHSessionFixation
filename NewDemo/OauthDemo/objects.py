@@ -1,7 +1,10 @@
 #Taken from old demo. Need to put other objects here once they're importing correctly
-from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
+from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField, SubmitField
+from flask import flash
 from random import seed
 from random import randint
+
+import model
 
 class SessionID():
     def __init__(self, ID):
@@ -17,19 +20,37 @@ class User():
         self.accountNum = randint(1, 9999) # For convenience
         self.account = Account(self.accountNum)
 
-    def deposit(self):
-        valid = 0
-        while valid == 0:
-            deposit = int(input("How much would you like to deposit? "))
+    def deposit(self, deposit):
+        # valid = 0
+        # while valid == 0:
+        #     deposit = int(input("How much would you like to deposit? "))
 
-            if deposit < 0:
-                print("Please enter a valid number!")
-            else:
-                self.account.balance = self.account.balance + deposit
-                print("Deposit complete!\n")
-                valid = 1
+        #     if deposit < 0:
+        #         print("Please enter a valid number!")
+        #     else:
+        #         self.account.balance = self.account.balance + deposit
+        #         print("Deposit complete!\n")
+        #         valid = 1
 
-    def payment(self, registeredAccounts):
+        if (deposit > 0):
+            self.account.balance += deposit
+            model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
+        # else:
+            #TODO flash/error
+
+    def withdraw(self, withdrawal):
+        if (withdrawal > 0):
+            if (self.account.balance - withdrawal >= 0):
+                self.account.balance -= withdrawal
+                model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
+            # else:
+                #TODO flash/error
+        # else:
+            #TODO flash/error
+
+
+    #FIXME never used
+    def payment(self, registeredAccounts): 
         accountExists = 0
         payeeAccount = int(input("Please enter a payee account number: "))
 
@@ -51,7 +72,6 @@ class User():
                     payee.balance = payee.balance + payment
                     print("Payment complete!\n")
                     valid = 1
-
         else:
             print("Account not found!\n")
 
@@ -72,8 +92,13 @@ class Account():
 class RegistrationForm(Form):
     fname = StringField('First name: ', [validators.DataRequired()])
     lname = StringField('Last name: ', [validators.DataRequired()])
-    password = PasswordField('Password: ', [validators.DataRequired()])
+    password = PasswordField('Password:', [validators.DataRequired()])
 
 class LoginForm(Form):
     accountNum = IntegerField('Account Number: ', [validators.DataRequired()])
     password = PasswordField('Password: ', [validators.DataRequired()])
+
+class TransactionForm(Form):
+    amount = IntegerField('Transaction Amount ($): ', [validators.DataRequired()])
+    deposit = SubmitField(label='Deposit')
+    withdraw = SubmitField(label='Withdraw')

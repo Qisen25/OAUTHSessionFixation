@@ -135,14 +135,27 @@ def authorize():
     token = twitter.authorize_access_token()
     resp = twitter.get('account/verify_credentials.json')
     profile = resp.json()
-    
-    if not 'ACCOUNT_NUM' in session:
-        session['ACCOUNT_NUM'] = profile['id']
+
+    # print(repr(profile)) #for debugging
+    newUser = User(profile['name'], '', "twitter")
+
+    model.addRegisteredUser(newUser)
+        
+    model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
         
     #print(profile)
-    # can store to db or whatever
+    # can store to db or whatever                                       # Lol Moritz
     # return redirect(url_for('banking', user=str(profile['name']))) TODO replace with this (sorry Kei i'm lazy)
-    return redirect(url_for('banking', name=str(profile['name']).user))
+    # return redirect(url_for('banking', name=str(profile['name']).user))
+    # return redirect(url_for('register_complete', accountNum=newUser.accountNum))
+    
+    accountNum=newUser.accountNum
+
+    if not 'ACCOUNT_NUM' in session:
+        session['ACCOUNT_NUM'] = accountNum
+    
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

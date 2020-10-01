@@ -1,0 +1,13 @@
+Flask
+flask-wtf
+flask-oauth
+Flask-OAuthlib
+wheel
+flask-migrate
+flask-login
+email-validator
+python-dotenv
+gunicorn
+flask-bootstrap
+requests
+authlib

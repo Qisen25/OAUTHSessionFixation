@@ -1,0 +1,55 @@
+<html>
+
+  <head>
+    <title>Steve from IT Banking</title>
+  </head>
+
+  <style>
+    body {
+      background-color:lightblue;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+    }
+
+    p {
+      color: white;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 10px;
+    }
+
+  </style>
+
+  <body>
+
+    <h1>Welcome to Steve from IT Banking</h1>
+    <p>Please login to continue</p>
+    
+    {% from "_formhelpers.html" import render_field %}
+
+    <form action='/' method="POST">
+      <dl align="center">
+        {{render_field(form.customerNum)}}<br>
+        {{render_field(form.password)}}<br>
+      </dl>
+      <p><input type=submit value=Login>
+    </form>
+
+    <p>Don't have an account?</p>
+    <p align="center"><a href='/register'><button class=grey>Register</button></a></p>
+
+  </body>
+  <footer><br>Property of Steve from IT, ISEC3004, 2020</footer>
+
+</html>

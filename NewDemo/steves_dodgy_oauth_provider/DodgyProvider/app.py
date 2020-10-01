@@ -146,7 +146,7 @@ def currently_authorized():
 def home():
     session.permanent = True
     if current_user():
-        return redirect('http://127.0.0.1:8000/login')
+        return redirect('http://127.0.0.1:5000/steveLogin')
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -158,7 +158,7 @@ def home():
         print("User id : " + str(user.id))
         session['id'] = user.id
         session['isAuth'] = None
-        return redirect('http://127.0.0.1:8000/login')
+        return redirect('http://127.0.0.1:5000/steveLogin')
     user = current_user()
     return render_template('home.html', user=user)
 
@@ -171,13 +171,13 @@ def initiate_temporary_credential():
             id=0, 
             client_key='nUf0hXbeiEn4mOE1HH8fiua7lcpCPET2Nn2hhZKB',
             client_secret='ZKXDSaewa29o26YwidwnoOfwlBqH6tnkNh5nkmBAgOcxJ2kGeU',
-            default_redirect_uri = 'http://127.0.0.1:8000/authorized'
+            default_redirect_uri = 'http://127.0.0.1:5000/steveAuthorized'
         )
         db.session.add(cl)
         db.session.commit()
 
     request.client_id= 1
-    request.redirect_uri='http://127.0.0.1:8000/authorized'
+    request.redirect_uri='http://127.0.0.1:5000/steveAuthorized'
     temp = server.create_temporary_credential(request)
     #print("Hey client " + repr(cl.client_key))
     # return temp.get_oauth_token()#server.create_temporary_credentials_response()
@@ -206,6 +206,9 @@ def authorize():
         userID = foundT.get_user_id()
         grant_user = User.query.get(foundT.get_user_id())
         #print("before updated id " + str(foundT.get_user_id()))
+        if user is None and foundT.get_user_id() is None:
+            return redirect('/')
+            
         if foundT.get_user_id() is None and currently_authorized() is None:
             usr = {'resource_owner_key': str(foundT.get_oauth_token()), 'id': user.get_user_id() }
             userID = user.get_user_id()
@@ -238,45 +241,6 @@ def authorize():
     except OAuth1Error as error:
         return render_template('error.html', _external=True, error=error)
 
-@app.route('/token', methods=['POST'])
-def issue_token():
-    # # session.permanent = True
-    # # user = current_user()
-    # # print("HEllo" + repr(user))
-    # tokArr = request.headers['Authorization'].split(',')
-
-    # s = str(tokArr[5]).split('oauth_token=')
-    # token = s[1].strip('"')
-    # #token = s[s.find(start) + len(start) : s.find(end)]
-    # print(token)
-
-    # print(tokArr)
-    # v = tokArr[4].split('oauth_consumer_key=')
-    # key = v[1].strip('"')
-    # print(v)
-
-    # v = tokArr[7].split('oauth_verifier=')
-    # verif = v[1].strip('"')
-    # print(verif.strip("'"))
-    # # #print(repr(request.oauth_consumer_key))
-    # request.credential = TemporaryCredential.query.filter_by(oauth_token=token).first()
-    # request.credential.client_id = 0
-    # db.session.commit()
-    # # server.create_authorization_verifier(request)
-    # # request.credential="hey"
-    # temp = server.create_token_credential(request)
-    # # print(repr(temp.get_oauth_token()))
-    # # return access token
-    # pong = server.create_token_response()
-    # print(repr(pong.data))
-    # print("** Client key ** " + str(Client.query.get(0).get_client_key()))
-    # #return pong
-    # return jsonify(
-    #     oauth_token=token,# note a new token is generated on each request
-    #     oauth_token_secret=temp.get_oauth_token_secret(),
-    #     oauth_verifier=verif
-    # )
-
 @app.route('/user', methods=['GET'])
 def getUser():
     #print(repr(request.args))
@@ -288,6 +252,6 @@ with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=8001)
     db.create_all()
     app.run()

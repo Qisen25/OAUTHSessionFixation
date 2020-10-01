@@ -4,6 +4,7 @@
 import os
 import pickle
 import sys
+import requests
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
@@ -30,9 +31,8 @@ import model
 ## INTERNAL DOCUMENTATION ##
 ############################
 # Session Information:
-#   User information is stored in the session by storing the account number under the key "ACCOUNT_NUM".
-#       If this key is not present, the user is not logged in.
-
+#   Sessions are stored as custom Session objects which contain a unique identifier and the associated customer. 
+#   The session ID is stored in the session as "SESSION_ID".
 
 #########################
 ## RUNTIME STARTS HERE ##
@@ -44,13 +44,26 @@ print("LOADED ALL REGISTERED USERS - here they are:")
 
 
 from authlib.integrations.flask_client import OAuth
+
 oauth = OAuth(app)
+#Twitter
 oauth.register(
     name='twitter',
     api_base_url='https://api.twitter.com/1.1/',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
+    fetch_token=lambda: session.get('token'),  # DON'T DO IT IN PRODUCTION
+)
+
+oauth.register(
+    'steve',
+    client_id='nUf0hXbeiEn4mOE1HH8fiua7lcpCPET2Nn2hhZKB',
+    client_secret='ZKXDSaewa29o26YwidwnoOfwlBqH6tnkNh5nkmBAgOcxJ2kGeU',
+    api_base_url='http://127.0.0.1:8001/',
+    request_token_url='http://127.0.0.1:8001/initiate',
+    access_token_url='http://127.0.0.1:8001/token',
+    authorize_url='http://127.0.0.1:8001/authorize',
     fetch_token=lambda: session.get('token'),  # DON'T DO IT IN PRODUCTION
 )
 
@@ -111,6 +124,7 @@ def logout():
     return redirect('/')
 
 
+
 @app.route('/twitterLogin')
 def twitterLogin():
     twitter = oauth.create_client("twitter")
@@ -126,6 +140,42 @@ def authorize():
 
     # print(repr(profile)) #for debugging
     newUser = User(profile['name'], '', "twitter")
+
+    model.addRegisteredUser(newUser)
+        
+    model.saveRegisteredUsers(model.REGISTERED_USERS_SAVEFILE)
+        
+    #print(profile)
+    # can store to db or whatever                                       # Lol Moritz
+    # return redirect(url_for('banking', user=str(profile['name']))) TODO replace with this (sorry Kei i'm lazy)
+    # return redirect(url_for('banking', name=str(profile['name']).user))
+    # return redirect(url_for('register_complete', accountNum=newUser.accountNum))
+    
+    accountNum=newUser.accountNum
+
+    if not 'ACCOUNT_NUM' in session:
+        session['ACCOUNT_NUM'] = accountNum
+    
+    return redirect('/')
+
+@app.route('/steveLogin')
+def steveLogin():
+    custom = oauth.create_client("steve")
+    redirect_uri = url_for('authorize', _external=True)
+    return custom.authorize_redirect(redirect_uri)
+
+@app.route('/steveAuthorized')
+def steverAuthorized():
+    print("Hey")
+    #custom = oauth.create_client("steve")
+    session['token'] = request.args['oauth_token']
+    print(repr(session['token']))
+    params = {'token': session['token']}
+    r = requests.get('http://127.0.0.1:8001/user', params=params)
+    print(r.text)
+
+    # print(repr(profile)) #for debugging
+    newUser = User(r.text, '', "steve")
 
     model.addRegisteredUser(newUser)
         

@@ -6,7 +6,7 @@
 </head>
 <body>
   <p>Client: {{ user.id }}</p>
-  <form action="http://127.0.0.1:5000/authorize" method="POST">
+  <form action="http://127.0.0.1:8001/authorize" method="POST">
     <p>Allow access?</p>
     <input type="hidden" name="oauth_token" value="{{ user.resource_owner_key }}">
     <input type="submit" name="confirm" value="yes">

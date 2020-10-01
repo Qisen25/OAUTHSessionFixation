@@ -65,7 +65,7 @@ def index():
         print(f"DEBUG: Index - user session is {session['ACCOUNT_NUM']}")
         print(f"Initiated index for user '{user.accountNum}'")
 
-        return render_template('index.html', name=(user.name + ' ' + user.surname), balance=user.account.balance)
+        return render_template('index.html', name=(user.name + ' ' + user.surname), number=user.accountNum, balance=user.account.balance)
     else:
         return redirect('/login')
 

@@ -4,14 +4,6 @@ from flask import flash
 from random import seed
 from random import randint
 
-import model
-
-class SessionID():
-    def __init__(self, ID):
-        self.ID = ID
-        self.auth = False
-        self.authAccountNum = None
-
 class User():
     def __init__(self, name, surname, password):
         self.name = name
@@ -89,6 +81,15 @@ class Account():
         # self.accountNum = accountNum
         self.balance = 1000000
 
+class Session():
+    def __init__(self, ID, accountNum):
+        self.ID = ID
+        self.accountNum = accountNum
+
+
+#############
+### FORMS ###
+#############
 class RegistrationForm(Form):
     fname = StringField('First name: ', [validators.DataRequired()])
     lname = StringField('Last name: ', [validators.DataRequired()])

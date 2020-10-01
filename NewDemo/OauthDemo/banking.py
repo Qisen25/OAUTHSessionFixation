@@ -12,8 +12,8 @@ from objects import TransactionForm
 def banking():
     print("ENTERED BANKING")
     
-    if 'ACCOUNT_NUM' in session: # If user session exists
-        user = model.findUser(session['ACCOUNT_NUM']) # Get the user by customer number
+    if model.validateSession(session): # If user session exists
+        user = model.findUser(model.sessions[session['SESSION_ID']].accountNum) # Get the user by customer number
 
         transaction = TransactionForm(request.form)
         if request.method == "POST":

@@ -9,10 +9,10 @@ from flask import Flask, render_template, request, redirect, session
 def banking():
     print("ENTERED BANKING")
     
-    if 'ACCOUNT_NUM' in session: # If user session exists
-        user = model.findUser(session['ACCOUNT_NUM']) # Get the user by customer number
+    if model.validateSession(session): # If user session exists
+        user = model.findUser(model.sessions[session['SESSION_ID']].accountNum) # Get the user by customer number
 
-        print(f"DEBUG: Banking - user session is {session['ACCOUNT_NUM']}")
+        print(f"DEBUG: Banking - user session ID is {session['SESSION_ID']}")
         print(f"Initiated banking for user '{user.accountNum}'")
 
         return render_template('banking.html', name=(user.name + ' ' + user.surname), balance=user.account.balance)

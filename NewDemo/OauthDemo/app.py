@@ -30,9 +30,8 @@ import model
 ## INTERNAL DOCUMENTATION ##
 ############################
 # Session Information:
-#   User information is stored in the session by storing the account number under the key "ACCOUNT_NUM".
-#       If this key is not present, the user is not logged in.
-
+#   Sessions are stored as custom Session objects which contain a unique identifier and the associated customer. 
+#   The session ID is stored in the session as "SESSION_ID".
 
 #########################
 ## RUNTIME STARTS HERE ##
@@ -70,25 +69,33 @@ def index():
 def login():
     #Create login form, both fields are mandatory -- user input fields are not centred for some reason
     # print(repr(login.accountNum))
-    if not 'ACCOUNT_NUM' in session: # If customer not already logged in
+    if not model.validateSession(session): # If customer not already logged in
         login = LoginForm(request.form)
 
-        print(request.method == "POST")
         if request.method == "POST":
-
             #Debug print
             print(f"Attempted login with account '{login.accountNum}', password '{login.password.data}'", file=sys.stdout)
 
+            # Try to find a user with input username & password
             user = model.validateUser(int(login.accountNum.data), login.password.data)
 
             print(f"DEBUG: Tried to get user and got {user}", file=sys.stdout)
 
+            # If a user with the given username and password was found
             if (user is not None):
                 # Debug print
                 print(f"Login for {login.accountNum.data} accepted!", file=sys.stdout)
+                print("Creating new session for user")
 
-                #Set the session to the current user's customer number
-                session['ACCOUNT_NUM'] = user.accountNum
+                # Create a session object for this new session (which is now stored in the dict of session objects)
+                newSessionObj = model.createSession(user)
+
+                # print(f"JUST CREATED SESSION {}: {}")
+                print(model.sessions)
+                # Linking new session object with the user's actual session
+                session['SESSION_ID'] = newSessionObj.ID
+
+                print(model.sessions)
 
                 #On successful login, will redirect to that user's profile
                 return redirect('/')
@@ -100,9 +107,14 @@ def login():
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
-    print("Logging out a user...")
-    # Invalidate the current session
-    session.clear()
+    """Logs out a user from the application by removing their session and invalidating their session ID."""
+    if (model.validateSession(session)):
+        print("Logging out a user...")
+        # Remove the session object from the list of permitted sessions
+        model.invalidateSession(session['SESSION_ID'])
+        
+        # Invalidate the current session
+        session.clear()
 
     return redirect('/')
 
